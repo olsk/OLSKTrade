@@ -353,36 +353,32 @@ describe('OLSKTradePayPalTransactions', function test_OLSKTradePayPalTransaction
 
 describe('OLSKTradePayPalOrder', function test_OLSKTradePayPalOrder() {
 
-	const uPayPal = function (inputData) {
-		return {
-			orders: {
-				retrieve () {
-					return Array.from(arguments);
+	const _OLSKTradePayPalOrder = function (param1, param2) {
+		return Object.assign(Object.assign({}, mod), {
+			_DataFoilPayPal: Object.assign({
+				orders: {
+					retrieve () {
+						return Array.from(arguments);
+					},
 				},
-			},
-		};
+			}, param2),
+		}).OLSKTradePayPalOrder(param1);
 	};
 
-	it('throws if param1 not paypal', function () {
+	it('throws if not string', function () {
 		throws(function () {
-			mod.OLSKTradePayPalOrder(null, '');
+			_OLSKTradePayPalOrder(null);
 		}, /OLSKErrorInputNotValid/);
 	});
 
-	it('throws if param2 not string', function () {
-		throws(function () {
-			mod.OLSKTradePayPalOrder(uPayPal, null);
-		}, /OLSKErrorInputNotValid/);
-	});
-
-	it('returns orders.retrieve', function () {
+	it('returns _DataFoilPayPal.orders.retrieve', function () {
 		const item = Date.now().toString();
-		deepEqual(mod.OLSKTradePayPalOrder(uPayPal, item), [item]);
+		deepEqual(_OLSKTradePayPalOrder(item), [item]);
 	});
 
 	if (liveEnabled) {
 		it('returns live data', async function () {
-			deepEqual(JSON.stringify(await mod.OLSKTradePayPalOrder(mod.DataFoilPayPal, '1JF658855X7653252')), '');
+			deepEqual(JSON.stringify(await _OLSKTradePayPalOrder('1JF658855X7653252', mod._DataFoilPayPal)), '');
 		});
 	}
 
