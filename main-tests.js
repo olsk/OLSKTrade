@@ -280,36 +280,32 @@ describe('OLSKTradePayPalAccessToken', function test_OLSKTradePayPalAccessToken(
 
 describe('OLSKTradePayPalSubscription', function test_OLSKTradePayPalSubscription() {
 
-	const uPayPal = function (inputData) {
-		return {
-			subscriptions: {
-				retrieve () {
-					return Array.from(arguments);
+	const _OLSKTradePayPalSubscription = function (param1, param2) {
+		return Object.assign(Object.assign({}, mod), {
+			_DataFoilPayPal: Object.assign({
+				subscriptions: {
+					retrieve () {
+						return Array.from(arguments);
+					},
 				},
-			},
-		};
+			}, param2),
+		}).OLSKTradePayPalSubscription(param1);
 	};
 
-	it('throws if param1 not paypal', function () {
+	it('throws if not string', function () {
 		throws(function () {
-			mod.OLSKTradePayPalSubscription(null, '');
+			_OLSKTradePayPalSubscription(null);
 		}, /OLSKErrorInputNotValid/);
 	});
 
-	it('throws if param2 not string', function () {
-		throws(function () {
-			mod.OLSKTradePayPalSubscription(uPayPal, null);
-		}, /OLSKErrorInputNotValid/);
-	});
-
-	it('returns subscriptions.retrieve', function () {
+	it('returns _DataFoilPayPal.subscriptions.retrieve', function () {
 		const item = Date.now().toString();
-		deepEqual(mod.OLSKTradePayPalSubscription(uPayPal, item), [item]);
+		deepEqual(_OLSKTradePayPalSubscription(item), [item]);
 	});
 
 	if (liveEnabled) {
 		it('returns live data', async function () {
-			deepEqual(JSON.stringify(await mod.OLSKTradePayPalSubscription(mod.DataFoilPayPal, 'I-SRVSXYP043JX')), '');
+			deepEqual(JSON.stringify(await _OLSKTradePayPalSubscription('I-SRVSXYP043JX', mod._DataFoilPayPal)), '');
 		});
 	}
 
