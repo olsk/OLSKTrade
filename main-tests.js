@@ -439,26 +439,30 @@ describe('OLSKTradePayPalSubscriptionTransactions', function test_OLSKTradePayPa
 		};
 	};
 
+	const _OLSKTradePayPalSubscriptionTransactions = function () {
+		return mod.OLSKTradePayPalSubscriptionTransactions(...Array.from(arguments));
+	};
+
 	it('throws if param1 not paypal', function () {
 		throws(function () {
-			mod.OLSKTradePayPalSubscriptionTransactions(null, '');
+			_OLSKTradePayPalSubscriptionTransactions(null, '');
 		}, /OLSKErrorInputNotValid/);
 	});
 
 	it('throws if param2 not string', function () {
 		throws(function () {
-			mod.OLSKTradePayPalSubscriptionTransactions(uPayPal, null);
+			_OLSKTradePayPalSubscriptionTransactions(uPayPal, null);
 		}, /OLSKErrorInputNotValid/);
 	});
 
 	it('returns subscriptions.transactions', function () {
 		const item = Date.now().toString();
-		deepEqual(mod.OLSKTradePayPalSubscriptionTransactions(uPayPal, item), [item]);
+		deepEqual(_OLSKTradePayPalSubscriptionTransactions(uPayPal, item), [item]);
 	});
 
 	if (liveEnabled) {
 		it('returns live data', async function () {
-			deepEqual(JSON.stringify(await mod.OLSKTradePayPalSubscriptionTransactions(mod.DataFoilPayPal, 'I-SRVSXYP043JX')), '');
+			deepEqual(JSON.stringify(await _OLSKTradePayPalSubscriptionTransactions(mod.DataFoilPayPal, 'I-SRVSXYP043JX')), '');
 		});
 	}
 
