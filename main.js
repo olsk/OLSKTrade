@@ -148,16 +148,12 @@ const mod = {
 		return param1(process.env.OLSK_TRADE_PAYPAL_CLIENT_ID, process.env.OLSK_TRADE_PAYPAL_CLIENT_SECRET, process.env.OLSK_TRADE_PAYPAL_TEMP_TOKEN).orders.retrieve(param2);
 	},
 
-	OLSKTradePayPalPlan (param1, param2) {
-		if (typeof param1 !== 'function') {
+	OLSKTradePayPalPlan (inputData) {
+		if (typeof inputData !== 'string') {
 			throw new Error('OLSKErrorInputNotValid');
 		}
 
-		if (typeof param2 !== 'string') {
-			throw new Error('OLSKErrorInputNotValid');
-		}
-
-		return param1(process.env.OLSK_TRADE_PAYPAL_CLIENT_ID, process.env.OLSK_TRADE_PAYPAL_CLIENT_SECRET, process.env.OLSK_TRADE_PAYPAL_TEMP_TOKEN).plans.retrieve(param2);
+		return this._DataFoilPayPal.plans.retrieve(inputData);
 	},
 
 	OLSKTradePayPalSubscriptionTransactions (inputData) {
@@ -245,7 +241,7 @@ const mod = {
 					}), {
 						method: 'GET',
 						headers: uHeaders({
-							'Authorization': 'Bearer ' + token,
+							'Authorization': 'Bearer ' + await mod._OLSKTradePayPalAccessToken(),
 						}),
 					});
 				},

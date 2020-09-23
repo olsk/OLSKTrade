@@ -390,36 +390,32 @@ describe('OLSKTradePayPalOrder', function test_OLSKTradePayPalOrder() {
 
 describe('OLSKTradePayPalPlan', function test_OLSKTradePayPalPlan() {
 
-	const uPayPal = function (inputData) {
-		return {
-			plans: {
-				retrieve () {
-					return Array.from(arguments);
+	const _OLSKTradePayPalPlan = function (param1, param2) {
+		return Object.assign(Object.assign({}, mod), {
+			_DataFoilPayPal: Object.assign({
+				plans: {
+					retrieve () {
+						return Array.from(arguments);
+					},
 				},
-			},
-		};
+			}, param2),
+		}).OLSKTradePayPalPlan(param1);
 	};
 
-	it('throws if param1 not paypal', function () {
+	it('throws if not string', function () {
 		throws(function () {
-			mod.OLSKTradePayPalPlan(null, '');
+			_OLSKTradePayPalPlan(null);
 		}, /OLSKErrorInputNotValid/);
 	});
 
-	it('throws if param2 not string', function () {
-		throws(function () {
-			mod.OLSKTradePayPalPlan(uPayPal, null);
-		}, /OLSKErrorInputNotValid/);
-	});
-
-	it('returns plans.retrieve', function () {
+	it('returns _DataFoilPayPal.plans.retrieve', function () {
 		const item = Date.now().toString();
-		deepEqual(mod.OLSKTradePayPalPlan(uPayPal, item), [item]);
+		deepEqual(_OLSKTradePayPalPlan(item), [item]);
 	});
 
 	if (liveEnabled) {
 		it('returns live data', async function () {
-			deepEqual(JSON.stringify(await mod.OLSKTradePayPalPlan(mod.DataFoilPayPal, 'P-5DR07778R1859725TLWN3OYA')), '');
+			deepEqual(JSON.stringify(await _OLSKTradePayPalPlan('P-5DR07778R1859725TLWN3OYA', mod._DataFoilPayPal)), '{"id":"P-5DR07778R1859725TLWN3OYA","product_id":"PROD-84K464577F8918311","name":"Yearly","status":"ACTIVE","usage_type":"LICENSED","billing_cycles":[{"pricing_scheme":{"version":1,"fixed_price":{"currency_code":"CAD","value":"1.0"},"create_time":"2019-10-07T22:08:32Z","update_time":"2019-10-07T22:08:32Z"},"frequency":{"interval_unit":"YEAR","interval_count":1},"tenure_type":"REGULAR","sequence":1,"total_cycles":0}],"payment_preferences":{"service_type":"PREPAID","auto_bill_outstanding":false,"setup_fee":{"currency_code":"CAD","value":"0.0"},"setup_fee_failure_action":"CANCEL","payment_failure_threshold":3},"quantity_supported":true,"create_time":"2019-10-07T22:08:32Z","update_time":"2019-10-07T22:08:32Z","links":[{"href":"https://api.sandbox.paypal.com/v1/billing/plans/P-5DR07778R1859725TLWN3OYA","rel":"self","method":"GET","encType":"application/json"},{"href":"https://api.sandbox.paypal.com/v1/billing/plans/P-5DR07778R1859725TLWN3OYA","rel":"edit","method":"PATCH","encType":"application/json"},{"href":"https://api.sandbox.paypal.com/v1/billing/plans/P-5DR07778R1859725TLWN3OYA/deactivate","rel":"self","method":"POST","encType":"application/json"}]}');
 		});
 	}
 
