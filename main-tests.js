@@ -427,42 +427,34 @@ describe('OLSKTradePayPalPlan', function test_OLSKTradePayPalPlan() {
 
 describe('OLSKTradePayPalSubscriptionTransactions', function test_OLSKTradePayPalSubscriptionTransactions() {
 
-	const uPayPal = function (inputData) {
-		return {
-			subscriptions: {
-				transactions () {
-					return {
-						transactions: Array.from(arguments),
-					};
+	const _OLSKTradePayPalSubscriptionTransactions = function (param1, param2) {
+		return Object.assign(Object.assign({}, mod), {
+			_DataFoilPayPal: Object.assign({
+				subscriptions: {
+					transactions () {
+						return {
+							transactions: Array.from(arguments),
+						};
+					},
 				},
-			},
-		};
+			}, param2),
+		}).OLSKTradePayPalSubscriptionTransactions(param1);
 	};
 
-	const _OLSKTradePayPalSubscriptionTransactions = function () {
-		return mod.OLSKTradePayPalSubscriptionTransactions(...Array.from(arguments));
-	};
-
-	it('throws if param1 not paypal', function () {
+	it('throws if not string', function () {
 		throws(function () {
-			_OLSKTradePayPalSubscriptionTransactions(null, '');
+			_OLSKTradePayPalSubscriptionTransactions(null);
 		}, /OLSKErrorInputNotValid/);
 	});
 
-	it('throws if param2 not string', function () {
-		throws(function () {
-			_OLSKTradePayPalSubscriptionTransactions(uPayPal, null);
-		}, /OLSKErrorInputNotValid/);
-	});
-
-	it('returns subscriptions.transactions', function () {
+	it('returns _DataFoilPayPal.subscriptions.transactions', function () {
 		const item = Date.now().toString();
-		deepEqual(_OLSKTradePayPalSubscriptionTransactions(uPayPal, item), [item]);
+		deepEqual(_OLSKTradePayPalSubscriptionTransactions(item), [item]);
 	});
 
 	if (liveEnabled) {
 		it('returns live data', async function () {
-			deepEqual(JSON.stringify(await _OLSKTradePayPalSubscriptionTransactions(mod.DataFoilPayPal, 'I-SRVSXYP043JX')), '');
+			deepEqual(JSON.stringify(await _OLSKTradePayPalSubscriptionTransactions('I-SRVSXYP043JX', mod._DataFoilPayPal)), '[{"status":"COMPLETED","id":"0AV673891R3839400","amount_with_breakdown":{"gross_amount":{"currency_code":"CAD","value":"1.00"},"fee_amount":{"currency_code":"CAD","value":"0.33"},"net_amount":{"currency_code":"CAD","value":"0.67"}},"payer_name":{"given_name":"John","surname":"Doe"},"payer_email":"sb-ihwnq353851@personal.example.com","time":"2020-09-04T16:09:38.000Z"}]');
 		});
 	}
 
