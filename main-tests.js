@@ -317,35 +317,31 @@ describe('OLSKTradePayPalSubscription', function test_OLSKTradePayPalSubscriptio
 
 describe('OLSKTradePayPalTransactions', function test_OLSKTradePayPalTransactions() {
 
-	const uPayPal = function (inputData) {
-		return {
-			transactions: {
-				list () {
-					return {
-						transaction_details: [{
-							alfa: 'bravo',
-						}],
-					};
+	const _OLSKTradePayPalTransactions = function (inputData) {
+		return Object.assign(Object.assign({}, mod), {
+			_DataFoilPayPal: Object.assign({
+				transactions: {
+					list () {
+						return {
+							transaction_details: [{
+								alfa: 'bravo',
+							}],
+						};
+					},
 				},
-			},
-		};
+			}, inputData),
+		}).OLSKTradePayPalTransactions();
 	};
 
-	it('throws if inputData not paypal', function () {
-		throws(function () {
-			mod.OLSKTradePayPalTransactions(null);
-		}, /OLSKErrorInputNotValid/);
-	});
-
-	it('returns transactions.list', function () {
-		deepEqual(mod.OLSKTradePayPalTransactions(uPayPal), [{
+	it('returns _DataFoilPayPal.transactions.list', function () {
+		deepEqual(_OLSKTradePayPalTransactions(), [{
 			alfa: 'bravo',
 		}]);
 	});
 
 	if (liveEnabled) {
 		it('returns live data', async function () {
-			deepEqual(JSON.stringify(await mod.OLSKTradePayPalTransactions(mod.DataFoilPayPal)), '');
+			deepEqual(JSON.stringify(await _OLSKTradePayPalTransactions(mod._DataFoilPayPal)), '');
 		});
 	}
 
