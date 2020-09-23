@@ -119,6 +119,10 @@ const mod = {
 			throw new Error('OLSKErrorInputNotValid');
 		}
 
+		if (!this._DataFoilPayPal) {
+			Object.assign(this, mod); // #hotfix-test-global-this
+		}
+
 		return this._DataFoilPayPal.subscriptions.retrieve(inputData);
 	},
 
