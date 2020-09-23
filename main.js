@@ -12,30 +12,6 @@ const uPromise = function (inputData) {
 
 const mod = {
 
-	OLSKTradeStripeListCharges (inputData) {
-		if (typeof inputData !== 'function') {
-			throw new Error('OLSKErrorInputNotValid');
-		}
-
-		return uPromise(inputData(process.env.OLSK_DONATE_STRIPE_SECRET_API_KEY).charges.list({
-			limit: 30,
-		})).then(function (inputData) {
-			return inputData.data;
-		});
-	},
-
-	OLSKTradeStripeListInvoices (inputData) {
-		if (typeof inputData !== 'function') {
-			throw new Error('OLSKErrorInputNotValid');
-		}
-
-		return uPromise(inputData(process.env.OLSK_DONATE_STRIPE_SECRET_API_KEY).invoices.list({
-			limit: 30,
-		})).then(function (inputData) {
-			return inputData.data;
-		});
-	},
-
 	OLSKTradeStripeSession (param1, param2) {
 		if (typeof param1 !== 'function') {
 			throw new Error('OLSKErrorInputNotValid');
@@ -86,6 +62,30 @@ const mod = {
 		}
 
 		return param1(process.env.OLSK_DONATE_STRIPE_SECRET_API_KEY).charges.retrieve(param2);
+	},
+
+	OLSKTradeStripeListCharges (inputData) {
+		if (typeof inputData !== 'function') {
+			throw new Error('OLSKErrorInputNotValid');
+		}
+
+		return uPromise(inputData(process.env.OLSK_DONATE_STRIPE_SECRET_API_KEY).charges.list({
+			limit: 30,
+		})).then(function (inputData) {
+			return inputData.data;
+		});
+	},
+
+	OLSKTradeStripeListInvoices (inputData) {
+		if (typeof inputData !== 'function') {
+			throw new Error('OLSKErrorInputNotValid');
+		}
+
+		return uPromise(inputData(process.env.OLSK_DONATE_STRIPE_SECRET_API_KEY).invoices.list({
+			limit: 30,
+		})).then(function (inputData) {
+			return inputData.data;
+		});
 	},
 
 	OLSKTradeStripeInvoicePrefix (inputData) {
