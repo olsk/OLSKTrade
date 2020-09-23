@@ -98,17 +98,7 @@ const mod = {
 		return inputData.slice(0, 8);
 	},
 
-	OLSKTradePayPalAccessToken (inputData) {
-		if (typeof inputData !== 'function') {
-			throw new Error('OLSKErrorInputNotValid');
-		}
-
-		return uPromise(inputData(process.env.OLSK_TRADE_PAYPAL_CLIENT_ID, process.env.OLSK_TRADE_PAYPAL_CLIENT_SECRET).access.token()).then(function (inputData) {
-			return inputData.access_token;
-		});
-	},
-
-	_OLSKTradePayPalAccessToken () {
+	OLSKTradePayPalAccessToken () {
 		return uPromise(this._DataFoilPayPal.access.token()).then(function (inputData) {
 			return inputData.access_token;
 		});
@@ -211,7 +201,7 @@ const mod = {
 					}), {
 						method: 'GET',
 						headers: uHeaders({
-							'Authorization': 'Bearer ' + await mod._OLSKTradePayPalAccessToken(),
+							'Authorization': 'Bearer ' + await mod.OLSKTradePayPalAccessToken(),
 						}),
 					});
 				},
@@ -222,7 +212,7 @@ const mod = {
 					}), {
 						method: 'GET',
 						headers: uHeaders({
-							'Authorization': 'Bearer ' + await mod._OLSKTradePayPalAccessToken(),
+							'Authorization': 'Bearer ' + await mod.OLSKTradePayPalAccessToken(),
 						}),
 					});
 				},
@@ -233,7 +223,7 @@ const mod = {
 					}), {
 						method: 'GET',
 						headers: uHeaders({
-							'Authorization': 'Bearer ' + await mod._OLSKTradePayPalAccessToken(),
+							'Authorization': 'Bearer ' + await mod.OLSKTradePayPalAccessToken(),
 						}),
 					});
 				},
@@ -244,7 +234,7 @@ const mod = {
 					}), {
 						method: 'GET',
 						headers: uHeaders({
-							'Authorization': 'Bearer ' + await mod._OLSKTradePayPalAccessToken(),
+							'Authorization': 'Bearer ' + await mod.OLSKTradePayPalAccessToken(),
 						}),
 					});
 				},
@@ -259,7 +249,7 @@ const mod = {
 					}), {
 						method: 'GET',
 						headers: uHeaders({
-							'Authorization': 'Bearer ' + await mod._OLSKTradePayPalAccessToken(),
+							'Authorization': 'Bearer ' + await mod.OLSKTradePayPalAccessToken(),
 						}),
 					});
 				},

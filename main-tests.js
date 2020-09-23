@@ -248,31 +248,27 @@ describe('OLSKTradeStripeInvoicePrefix', function test_OLSKTradeStripeInvoicePre
 
 describe('OLSKTradePayPalAccessToken', function test_OLSKTradePayPalAccessToken() {
 
-	const uPayPal = function (inputData) {
-		return {
-			access: {
-				token () {
-					return {
-						access_token: 'alfa',
-					};
+	const _OLSKTradePayPalAccessToken = function (inputData) {
+		return Object.assign(Object.assign({}, mod), {
+			_DataFoilPayPal: Object.assign({
+				access: {
+					token () {
+						return {
+							access_token: 'alfa',
+						};
+					},
 				},
-			},
-		};
+			}, inputData),
+		}).OLSKTradePayPalAccessToken();
 	};
 
-	it('throws if inputData not paypal', function () {
-		throws(function () {
-			mod.OLSKTradePayPalAccessToken(null);
-		}, /OLSKErrorInputNotValid/);
-	});
-
-	it('returns access.token', function () {
-		deepEqual(mod.OLSKTradePayPalAccessToken(uPayPal), 'alfa');
+	it('returns _DataFoilPayPal.access.token', function () {
+		deepEqual(_OLSKTradePayPalAccessToken(), 'alfa');
 	});
 
 	if (liveEnabled) {
 		it('returns live data', async function () {
-			deepEqual((await mod.OLSKTradePayPalAccessToken(mod.DataFoilPayPal)), '');
+			deepEqual((await _OLSKTradePayPalAccessToken(mod._DataFoilPayPal)), '');
 		});
 	}
 
