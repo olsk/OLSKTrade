@@ -210,36 +210,32 @@ describe('OLSKTradeStripeInvoice', function test_OLSKTradeStripeInvoice() {
 
 describe('OLSKTradeStripeCharge', function test_OLSKTradeStripeCharge() {
 
-	const uStripe = function () {
-		return {
-			charges: {
-				retrieve () {
-					return Array.from(arguments);
+	const _OLSKTradeStripeCharge = function () {
+		return Object.assign(Object.assign({}, mod), {
+			_DataFoilStripe: {
+				charges: {
+					retrieve () {
+						return Array.from(arguments);
+					},
 				},
 			},
-		};
+		}).OLSKTradeStripeCharge(...Array.from(arguments));
 	};
 
-	it('throws if param1 not stripe', function () {
+	it('throws if not string', function () {
 		throws(function () {
-			mod.OLSKTradeStripeCharge(null, '');
-		}, /OLSKErrorInputNotValid/);
-	});
-
-	it('throws if param2 not string', function () {
-		throws(function () {
-			mod.OLSKTradeStripeCharge(uStripe, null);
+			mod.OLSKTradeStripeCharge(null);
 		}, /OLSKErrorInputNotValid/);
 	});
 
 	it('returns charges.retrieve', function () {
 		const item = Date.now().toString();
-		deepEqual(mod.OLSKTradeStripeCharge(uStripe, item), [item]);
+		deepEqual(_OLSKTradeStripeCharge(item), [item]);
 	});
 
 	if (liveEnabled) {
 		it('returns live data', async function () {
-			deepEqual(JSON.stringify(await mod.OLSKTradeStripeCharge(require('stripe'), 'ch_0HNKC4YiCgQEaSkyywcDEnVg')), '');
+			deepEqual(JSON.stringify(await mod.OLSKTradeStripeCharge('ch_0HNKC4YiCgQEaSkyywcDEnVg')), '');
 		});
 	}
 

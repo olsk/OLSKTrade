@@ -86,16 +86,12 @@ const mod = {
 		return param1(process.env.OLSK_TRADE_STRIPE_SECRET_API_KEY).invoices.retrieve(param2);
 	},
 
-	OLSKTradeStripeCharge (param1, param2) {
-		if (typeof param1 !== 'function') {
+	OLSKTradeStripeCharge (inputData) {
+		if (typeof inputData !== 'string') {
 			throw new Error('OLSKErrorInputNotValid');
 		}
 
-		if (typeof param2 !== 'string') {
-			throw new Error('OLSKErrorInputNotValid');
-		}
-
-		return param1(process.env.OLSK_TRADE_STRIPE_SECRET_API_KEY).charges.retrieve(param2);
+		return this._DataFoilStripe.charges.retrieve(inputData);
 	},
 
 	OLSKTradeStripeListCharges () {
