@@ -98,12 +98,8 @@ const mod = {
 		return param1(process.env.OLSK_TRADE_STRIPE_SECRET_API_KEY).charges.retrieve(param2);
 	},
 
-	OLSKTradeStripeListCharges (inputData) {
-		if (typeof inputData !== 'function') {
-			throw new Error('OLSKErrorInputNotValid');
-		}
-
-		return uPromise(inputData(process.env.OLSK_TRADE_STRIPE_SECRET_API_KEY).charges.list({
+	OLSKTradeStripeListCharges () {
+		return uPromise(this._DataFoilStripe.charges.list({
 			limit: 30,
 		})).then(function (inputData) {
 			return inputData.data;

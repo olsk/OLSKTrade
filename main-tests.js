@@ -247,35 +247,43 @@ describe('OLSKTradeStripeCharge', function test_OLSKTradeStripeCharge() {
 
 describe('OLSKTradeStripeListCharges', function test_OLSKTradeStripeListCharges() {
 
-	const uStripe = function () {
-		return {
-			charges: {
-				list () {
-					return {
-						data: [{
-							alfa: 'bravo',
-						}],
-					};
-				},
+	const _OLSKTradeStripeListCharges = function (inputData) {
+		return Object.assign(Object.assign({}, mod), {
+			_DataFoilStripe: {
+				charges: Object.assign({
+					list () {
+						return {
+							data: [{
+								alfa: 'bravo',
+							}],
+						};
+					},
+				}, inputData),
 			},
-		};
+		}).OLSKTradeStripeListCharges();
 	};
 
-	it('throws if param1 not stripe', function () {
-		throws(function () {
-			mod.OLSKTradeStripeListCharges(null);
-		}, /OLSKErrorInputNotValid/);
+	it('returns charges.list.data', function () {
+		deepEqual(_OLSKTradeStripeListCharges(), [{
+			alfa: 'bravo',
+		}]);
 	});
 
-	it('returns charges.list', function () {
-		deepEqual(mod.OLSKTradeStripeListCharges(uStripe), [{
-			alfa: 'bravo',
+	it('passes input params', function () {
+		deepEqual(_OLSKTradeStripeListCharges({
+			list () {
+				return {
+					data: Array.from(arguments),
+				};
+			},
+		}), [{
+			limit: 30,
 		}]);
 	});
 
 	if (liveEnabled) {
 		it('returns live data', async function () {
-			deepEqual((await mod.OLSKTradeStripeListCharges(require('stripe'))), [{}]);
+			deepEqual(JSON.stringify(await mod.OLSKTradeStripeListCharges()), '');
 		});
 	}
 
