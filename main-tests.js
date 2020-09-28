@@ -95,40 +95,36 @@ describe('OLSKTradePayPalGuardMiddleware', function test_OLSKTradePayPalGuardMid
 
 describe('OLSKTradeStripeSession', function test_OLSKTradeStripeSession() {
 
-	const uStripe = function () {
-		return {
-			checkout: {
-				sessions: {
-					retrieve () {
-						return Array.from(arguments);
+	const _OLSKTradeStripeSession = function () {
+		return Object.assign(Object.assign({}, mod), {
+			_DataFoilStripe: {
+				checkout: {
+					sessions: {
+						retrieve () {
+							return Array.from(arguments);
+						},
 					},
 				},
 			},
-		};
+		}).OLSKTradeStripeSession(...Array.from(arguments));
 	};
 
-	it('throws if param1 not stripe', function () {
+	it('throws if not string', function () {
 		throws(function () {
-			mod.OLSKTradeStripeSession(null, '');
-		}, /OLSKErrorInputNotValid/);
-	});
-
-	it('throws if param2 not string', function () {
-		throws(function () {
-			mod.OLSKTradeStripeSession(uStripe, null);
+			mod.OLSKTradeStripeSession(null);
 		}, /OLSKErrorInputNotValid/);
 	});
 
 	it('returns checkout.sessions.retrieve', function () {
 		const item = Date.now().toString();
-		deepEqual(mod.OLSKTradeStripeSession(uStripe, item), [item, {
+		deepEqual(_OLSKTradeStripeSession(item), [item, {
 			expand: ['customer'],
 		}]);
 	});
 
 	if (liveEnabled) {
 		it('returns live data', async function () {
-			deepEqual(JSON.stringify(await mod.OLSKTradeStripeSession(require('stripe'), 'cs_test_349RhhKHLSqyTxTGDF7zoZvLEm8eEss0snlu991ZOm7c5FvDVubbvFFo')), '');
+			deepEqual(JSON.stringify(await mod.OLSKTradeStripeSession('cs_test_349RhhKHLSqyTxTGDF7zoZvLEm8eEss0snlu991ZOm7c5FvDVubbvFFo')), '');
 		});
 	}
 

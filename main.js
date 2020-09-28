@@ -46,16 +46,12 @@ const mod = {
 		})(req._FakeEnv || process.env));
 	},
 
-	OLSKTradeStripeSession (param1, param2) {
-		if (typeof param1 !== 'function') {
+	OLSKTradeStripeSession (inputData) {
+		if (typeof inputData !== 'string') {
 			throw new Error('OLSKErrorInputNotValid');
 		}
 
-		if (typeof param2 !== 'string') {
-			throw new Error('OLSKErrorInputNotValid');
-		}
-
-		return param1(process.env.OLSK_TRADE_STRIPE_SECRET_API_KEY).checkout.sessions.retrieve(param2, {
+		return this._DataFoilStripe.checkout.sessions.retrieve(inputData, {
 			expand: ['customer'],
 		});
 
