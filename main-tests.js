@@ -4,6 +4,95 @@ const mod = require('./main.js');
 
 const liveEnabled = false;
 
+const uDone = function (inputData) {
+	return inputData;
+};
+
+describe('OLSKTradeStripeGuardMiddleware', function test_OLSKTradeStripeGuardMiddleware() {
+
+	const _OLSKTradeStripeGuardMiddleware = function (inputData) {
+		return mod.OLSKTradeStripeGuardMiddleware({
+			_FakeEnv: Object.assign({
+				OLSK_TRADE_STRIPE_SECRET_API_KEY: 'alfa',
+			}, inputData),
+		}, {}, uDone);
+	};
+
+	it('throws if not object', function() {
+		throws(function() {
+			mod.OLSKTradeStripeGuardMiddleware({
+				_FakeEnv: 'alfa',
+			}, {}, uDone)
+		}, /OLSKErrorInputNotValid/);
+	});
+
+	it('returns error if no OLSK_TRADE_STRIPE_SECRET_API_KEY', function () {
+		deepEqual(_OLSKTradeStripeGuardMiddleware({
+			OLSK_TRADE_STRIPE_SECRET_API_KEY: null,
+		}), new Error('OLSK_TRADE_STRIPE_SECRET_API_KEY not filled'));
+	});
+
+	it('returns error if OLSK_TRADE_STRIPE_SECRET_API_KEY blank', function () {
+		deepEqual(_OLSKTradeStripeGuardMiddleware({
+			OLSK_TRADE_STRIPE_SECRET_API_KEY: ' ',
+		}), new Error('OLSK_TRADE_STRIPE_SECRET_API_KEY not filled'));
+	});
+
+	it('returns undefined', function() {
+		deepEqual(_OLSKTradeStripeGuardMiddleware(), undefined);
+	});
+
+});
+
+describe('OLSKTradePayPalGuardMiddleware', function test_OLSKTradePayPalGuardMiddleware() {
+
+	const _OLSKTradePayPalGuardMiddleware = function (inputData) {
+		return mod.OLSKTradePayPalGuardMiddleware({
+			_FakeEnv: Object.assign({
+				OLSK_TRADE_PAYPAL_CLIENT_ID: 'alfa',
+				OLSK_TRADE_PAYPAL_CLIENT_SECRET: 'alfa',
+			}, inputData),
+		}, {}, uDone);
+	};
+
+	it('throws if not object', function() {
+		throws(function() {
+			mod.OLSKTradePayPalGuardMiddleware({
+				_FakeEnv: 'alfa',
+			}, {}, uDone)
+		}, /OLSKErrorInputNotValid/);
+	});
+
+	it('returns error if no OLSK_TRADE_PAYPAL_CLIENT_ID', function () {
+		deepEqual(_OLSKTradePayPalGuardMiddleware({
+			OLSK_TRADE_PAYPAL_CLIENT_ID: null,
+		}), new Error('OLSK_TRADE_PAYPAL_CLIENT_ID not filled'));
+	});
+
+	it('returns error if OLSK_TRADE_PAYPAL_CLIENT_ID blank', function () {
+		deepEqual(_OLSKTradePayPalGuardMiddleware({
+			OLSK_TRADE_PAYPAL_CLIENT_ID: ' ',
+		}), new Error('OLSK_TRADE_PAYPAL_CLIENT_ID not filled'));
+	});
+
+	it('returns error if no OLSK_TRADE_PAYPAL_CLIENT_SECRET', function () {
+		deepEqual(_OLSKTradePayPalGuardMiddleware({
+			OLSK_TRADE_PAYPAL_CLIENT_SECRET: null,
+		}), new Error('OLSK_TRADE_PAYPAL_CLIENT_SECRET not filled'));
+	});
+
+	it('returns error if OLSK_TRADE_PAYPAL_CLIENT_SECRET blank', function () {
+		deepEqual(_OLSKTradePayPalGuardMiddleware({
+			OLSK_TRADE_PAYPAL_CLIENT_SECRET: ' ',
+		}), new Error('OLSK_TRADE_PAYPAL_CLIENT_SECRET not filled'));
+	});
+
+	it('returns undefined', function() {
+		deepEqual(_OLSKTradePayPalGuardMiddleware(), undefined);
+	});
+
+});
+
 describe('OLSKTradeStripeSession', function test_OLSKTradeStripeSession() {
 
 	const uStripe = function () {

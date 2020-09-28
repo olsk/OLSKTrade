@@ -12,7 +12,39 @@ const uPromise = function (inputData) {
 	};
 };
 
+const uIsFilled = function (inputData) {
+	return typeof inputData === 'string' && inputData.trim() !== '';
+};
+
 const mod = {
+
+	OLSKTradeStripeGuardMiddleware (req, res, next) {
+		return next((function (inputData) {
+			if (typeof inputData !== 'object' || inputData === null) {
+				throw new Error('OLSKErrorInputNotValid');
+			}
+
+			if (!uIsFilled(inputData.OLSK_TRADE_STRIPE_SECRET_API_KEY)) {
+				return new Error('OLSK_TRADE_STRIPE_SECRET_API_KEY not filled');
+			}
+		})(req._FakeEnv || process.env));
+	},
+
+	OLSKTradePayPalGuardMiddleware (req, res, next) {
+		return next((function (inputData) {
+			if (typeof inputData !== 'object' || inputData === null) {
+				throw new Error('OLSKErrorInputNotValid');
+			}
+
+			if (!uIsFilled(inputData.OLSK_TRADE_PAYPAL_CLIENT_ID)) {
+				return new Error('OLSK_TRADE_PAYPAL_CLIENT_ID not filled');
+			}
+
+			if (!uIsFilled(inputData.OLSK_TRADE_PAYPAL_CLIENT_SECRET)) {
+				return new Error('OLSK_TRADE_PAYPAL_CLIENT_SECRET not filled');
+			}
+		})(req._FakeEnv || process.env));
+	},
 
 	OLSKTradeStripeSession (param1, param2) {
 		if (typeof param1 !== 'function') {
