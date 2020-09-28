@@ -173,36 +173,32 @@ describe('OLSKTradeStripeSubscription', function test_OLSKTradeStripeSubscriptio
 
 describe('OLSKTradeStripeInvoice', function test_OLSKTradeStripeInvoice() {
 
-	const uStripe = function () {
-		return {
-			invoices: {
-				retrieve () {
-					return Array.from(arguments);
+	const _OLSKTradeStripeInvoice = function () {
+		return Object.assign(Object.assign({}, mod), {
+			_DataFoilStripe: {
+				invoices: {
+					retrieve () {
+						return Array.from(arguments);
+					},
 				},
 			},
-		};
+		}).OLSKTradeStripeInvoice(...Array.from(arguments));
 	};
 
-	it('throws if param1 not stripe', function () {
+	it('throws if not string', function () {
 		throws(function () {
-			mod.OLSKTradeStripeInvoice(null, '');
-		}, /OLSKErrorInputNotValid/);
-	});
-
-	it('throws if param2 not string', function () {
-		throws(function () {
-			mod.OLSKTradeStripeInvoice(uStripe, null);
+			mod.OLSKTradeStripeInvoice(null);
 		}, /OLSKErrorInputNotValid/);
 	});
 
 	it('returns invoices.retrieve', function () {
 		const item = Date.now().toString();
-		deepEqual(mod.OLSKTradeStripeInvoice(uStripe, item), [item]);
+		deepEqual(_OLSKTradeStripeInvoice(item), [item]);
 	});
 
 	if (liveEnabled) {
 		it('returns live data', async function () {
-			deepEqual(JSON.stringify(await mod.OLSKTradeStripeInvoice(require('stripe'), 'in_0HNKC3YiCgQEaSkygSOetZ6p')), '');
+			deepEqual(JSON.stringify(await mod.OLSKTradeStripeInvoice('in_0HNKC3YiCgQEaSkygSOetZ6p')), '');
 		});
 	}
 
