@@ -283,35 +283,31 @@ describe('OLSKTradeStripeListCharges', function test_OLSKTradeStripeListCharges(
 
 describe('OLSKTradeStripeListInvoices', function test_OLSKTradeStripeListInvoices() {
 
-	const uStripe = function () {
-		return {
-			invoices: {
-				list () {
-					return {
-						data: [{
-							alfa: 'bravo',
-						}],
-					};
+	const _OLSKTradeStripeListInvoices = function () {
+		return Object.assign(Object.assign({}, mod), {
+			_DataFoilStripe: {
+				invoices: {
+					list () {
+						return {
+							data: [{
+								alfa: 'bravo',
+							}],
+						};
+					},
 				},
 			},
-		};
+		}).OLSKTradeStripeListInvoices();
 	};
 
-	it('throws if not stripe', function () {
-		throws(function () {
-			mod.OLSKTradeStripeListInvoices(null);
-		}, /OLSKErrorInputNotValid/);
-	});
-
 	it('returns invoices.list.data', function () {
-		deepEqual(mod.OLSKTradeStripeListInvoices(uStripe), [{
+		deepEqual(_OLSKTradeStripeListInvoices(), [{
 			alfa: 'bravo',
 		}]);
 	});
 
 	if (liveEnabled) {
 		it('returns live data', async function () {
-			deepEqual(JSON.stringify(await mod.OLSKTradeStripeListInvoices(require('stripe'))), '');
+			deepEqual(JSON.stringify(await mod.OLSKTradeStripeListInvoices()), '');
 		});
 	}
 

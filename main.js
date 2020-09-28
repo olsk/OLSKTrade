@@ -110,12 +110,8 @@ const mod = {
 		});
 	},
 
-	OLSKTradeStripeListInvoices (inputData) {
-		if (typeof inputData !== 'function') {
-			throw new Error('OLSKErrorInputNotValid');
-		}
-
-		return uPromise(inputData(process.env.OLSK_TRADE_STRIPE_SECRET_API_KEY).invoices.list({
+	OLSKTradeStripeListInvoices () {
+		return uPromise(this._DataFoilStripe.invoices.list({
 			limit: 30,
 		})).then(function (inputData) {
 			return inputData.data;
@@ -182,6 +178,9 @@ const mod = {
 
 	// DATA
 
+	_DataFoilStripe: (function(inputData) {
+		return require('stripe')(inputData);
+	})(process.env.OLSK_TRADE_STRIPE_SECRET_API_KEY),
 	_DataFoilPayPal: (function(user, pass) {
 		const uHeaders = function (inputData = {}) {
 			const header = require('node-fetch').Headers;
