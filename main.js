@@ -249,6 +249,21 @@ const mod = {
 						}),
 					});
 				},
+				async update (inputData) {
+					return (await require('node-fetch')(uURL(`https://${ kPayPalService }.paypal.com/v1/billing/subscriptions/${ inputData }`, {
+					}), {
+						method: 'PATCH',
+						headers: uHeaders({
+							'Authorization': 'Bearer ' + await mod.OLSKTradePayPalAccessToken(),
+							'Content-Type': 'application/json',
+						}),
+						body: JSON.stringify([{
+							op: 'replace',
+							path: '/custom_id',
+					    value: 'alfa',
+					  }]),
+					})).text()
+				},
 				async transactions (inputData) {
 					const uDate = function (inputData = 0) {
 						return (new Date(Date.now() - inputData)).toJSON();
