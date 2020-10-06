@@ -149,8 +149,10 @@ const mod = {
 	},
 
 	OLSKTradePayPalTransactions () {
+		const _this = this;
+		
 		return uPromise(this._DataFoilPayPal.transactions.list()).then(function (inputData) {
-			return inputData.transaction_details;
+			return _this._DataPayPalCachedTransactions.concat(inputData.transaction_details);
 		});
 	},
 

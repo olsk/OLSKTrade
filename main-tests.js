@@ -466,8 +466,20 @@ describe('OLSKTradePayPalTransactions', function test_OLSKTradePayPalTransaction
 		}).OLSKTradePayPalTransactions();
 	};
 
+	beforeEach(function () {
+		mod._DataPayPalCachedTransactions = [];
+	});
+
 	it('returns _DataFoilPayPal.transactions.list', function () {
 		deepEqual(_OLSKTradePayPalTransactions(), [{
+			alfa: 'bravo',
+		}]);
+	});
+
+	it('includes _DataPayPalCachedTransactions', function () {
+		mod._DataPayPalCachedTransactions = ['alfa'];
+		
+		deepEqual(_OLSKTradePayPalTransactions(), ['alfa', {
 			alfa: 'bravo',
 		}]);
 	});
