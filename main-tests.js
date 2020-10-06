@@ -476,6 +476,98 @@ describe('OLSKTradePayPalCacheTransaction', function test_OLSKTradePayPalCacheTr
 
 });
 
+describe('OLSKTradePayPalCacheOrder', function test_OLSKTradePayPalCacheOrder() {
+
+	beforeEach(function () {
+		mod._DataPayPalCachedTransactions = [];
+	});
+
+	const _OLSKTradePayPalCacheOrder = function (inputData = null) {
+		return Object.assign(Object.assign({}, mod), {
+			OLSKTradePayPalOrder () {
+				return inputData;
+			},
+		}).OLSKTradePayPalCacheOrder('alfa');
+	};
+
+	it('throws if not string', function () {
+		throws(function () {
+			mod.OLSKTradePayPalCacheOrder(null);
+		}, /OLSKErrorInputNotValid/);
+	});
+
+	it('throws if not filled', function () {
+		throws(function () {
+			mod.OLSKTradePayPalCacheOrder(' ');
+		}, /OLSKErrorInputNotValid/);
+	});
+
+	it('returns undefined', function () {
+		deepEqual(_OLSKTradePayPalCacheOrder(), undefined);
+	});
+
+	context('_DataPayPalCachedTransactions', function () {
+
+		it('generates nothing if returns null', function () {
+			_OLSKTradePayPalCacheOrder();
+
+			deepEqual(mod._DataPayPalCachedTransactions, [])
+		});
+
+		it('generates _DataPayPalCachedTransactions', function () {
+			const date = new Date();
+			const number = Date.now();
+			const string1 = JSON.stringify({
+				alfa: Math.random(),
+			});
+			const string2 = Math.random().toString();
+			
+			_OLSKTradePayPalCacheOrder({
+				purchase_units: [
+				  {
+				    amount: {
+				      value: number + '.00',
+				    },
+				    custom_id: string1,
+				    invoice_id: string2,
+				  }
+				],
+				create_time: date.toJSON(),
+			});
+
+			deepEqual(mod._DataPayPalCachedTransactions, [{
+		    transaction_info: {
+		      transaction_initiation_date: date.toJSON(),
+		      transaction_amount: {
+		        value: number + '.00'
+		      },
+		      custom_field: string1,
+		      invoice_id: string2,
+		    },
+		  }])
+		});
+	
+	});
+
+	if (liveEnabled) {
+		it('caches live data', async function () {
+			this.timeout(10000)
+			await mod.OLSKTradePayPalCacheOrder('1M500636BA509790U');
+
+			deepEqual(mod._DataPayPalCachedTransactions, [{
+		    transaction_info: {
+		      invoice_id: 'kfy044jt',
+		      transaction_amount: {
+		        value: '3.00'
+		      },
+		      transaction_initiation_date: '2020-10-06T13:31:06.000Z'
+		    }
+		  }]);
+		});
+	}
+
+});
+
 describe('OLSKTradePayPalTransactions', function test_OLSKTradePayPalTransactions() {
 
 	const _OLSKTradePayPalTransactions = function (inputData) {

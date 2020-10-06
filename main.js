@@ -126,6 +126,22 @@ const mod = {
 		});
 	},
 
+	OLSKTradePayPalCacheOrder (inputData) {
+		if (!uIsFilled(inputData)) {
+			throw new Error('OLSKErrorInputNotValid');
+		}
+
+		const _this = this;
+
+		return uPromise(this.OLSKTradePayPalOrder(inputData)).then(function (order) {
+			if (!order) {
+				return;
+			}
+
+			_this.OLSKTradePayPalCacheTransaction(new Date(order.create_time), parseInt(order.purchase_units[0].amount.value), order.purchase_units[0].custom_id, order.purchase_units[0].invoice_id);
+		});
+	},
+
 	OLSKTradePayPalCacheTransaction (param1, param2, param3, param4) {
 		if (!(param1 instanceof Date) || Number.isNaN(param1.getTime())) {
 			throw new Error('OLSKErrorInputNotValid');
