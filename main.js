@@ -124,6 +124,30 @@ const mod = {
 		return this._DataFoilPayPal.subscriptions.retrieve(inputData);
 	},
 
+	OLSKTradePayPalCacheTransaction (param1, param2, param3) {
+		if (!(param1 instanceof Date) || Number.isNaN(param1.getTime())) {
+			throw new Error('OLSKErrorInputNotValid');
+		}
+
+		if (parseInt(param2) !== param2 || param2 < 1) {
+			throw new Error('OLSKErrorInputNotValid');
+		}
+
+		if (!uIsFilled(param3)) {
+			throw new Error('OLSKErrorInputNotValid');
+		}
+
+		this._DataPayPalCachedTransactions.push({
+			transaction_info: {
+			  transaction_initiation_date: param1.toJSON(),
+			  transaction_amount: {
+			    value: param2 + '.00'
+			  },
+			  custom_field: param3,
+			},
+		});
+	},
+
 	OLSKTradePayPalTransactions () {
 		return uPromise(this._DataFoilPayPal.transactions.list()).then(function (inputData) {
 			return inputData.transaction_details;
@@ -161,6 +185,7 @@ const mod = {
 	_DataFoilStripe: (function(inputData) {
 		return require('stripe')(inputData);
 	})(process.env.OLSK_TRADE_STRIPE_SECRET_API_KEY),
+	_DataPayPalCachedTransactions: [],
 	_DataFoilPayPal: (function(user, pass) {
 		const uHeaders = function (inputData = {}) {
 			const header = require('node-fetch').Headers;

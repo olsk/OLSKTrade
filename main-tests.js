@@ -384,6 +384,70 @@ describe('OLSKTradePayPalSubscription', function test_OLSKTradePayPalSubscriptio
 
 });
 
+describe('OLSKTradePayPalCacheTransaction', function test_OLSKTradePayPalCacheTransaction() {
+
+	beforeEach(function () {
+		mod._DataPayPalCachedTransactions = [];
+	});
+
+	it('throws if param1 not date', function () {
+		throws(function () {
+			mod.OLSKTradePayPalCacheTransaction(new Date('alfa'), 1, 'alfa');
+		}, /OLSKErrorInputNotValid/);
+	});
+
+	it('throws if param2 not integer', function () {
+		throws(function () {
+			mod.OLSKTradePayPalCacheTransaction(new Date(), null, 'alfa');
+		}, /OLSKErrorInputNotValid/);
+	});
+
+	it('throws if param2 not above 0', function () {
+		throws(function () {
+			mod.OLSKTradePayPalCacheTransaction(new Date(), 0, 'alfa');
+		}, /OLSKErrorInputNotValid/);
+	});
+
+	it('throws if param3 not string', function () {
+		throws(function () {
+			mod.OLSKTradePayPalCacheTransaction(new Date(), 1, null);
+		}, /OLSKErrorInputNotValid/);
+	});
+
+	it('throws if param3 not filled', function () {
+		throws(function () {
+			mod.OLSKTradePayPalCacheTransaction(new Date(), 1, ' ');
+		}, /OLSKErrorInputNotValid/);
+	});
+
+	it('returns undefined', function () {
+		deepEqual(mod.OLSKTradePayPalCacheTransaction(new Date(), 1, 'alfa'), undefined);
+	});
+
+	context('_DataPayPalCachedTransactions', function () {
+
+		it('generates _DataPayPalCachedTransactions', function () {
+			const date = new Date();
+			const number = Date.now();
+			const string = Math.random().toString();
+			
+			mod.OLSKTradePayPalCacheTransaction(date, number, string);
+
+			deepEqual(mod._DataPayPalCachedTransactions, [{
+		    transaction_info: {
+		      transaction_initiation_date: date.toJSON(),
+		      transaction_amount: {
+		        value: number + '.00'
+		      },
+		      custom_field: string,
+		    },
+		  }])
+		});
+	
+	});
+
+});
+
 describe('OLSKTradePayPalTransactions', function test_OLSKTradePayPalTransactions() {
 
 	const _OLSKTradePayPalTransactions = function (inputData) {
