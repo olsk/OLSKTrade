@@ -121,7 +121,9 @@ const mod = {
 			Object.assign(this, mod); // #hotfix-test-global-this
 		}
 
-		return this._DataFoilPayPal.subscriptions.retrieve(inputData);
+		return uPromise(this._DataFoilPayPal.subscriptions.retrieve(inputData)).then(function (result) {
+			return result.name === 'RESOURCE_NOT_FOUND' ? null : result;
+		});
 	},
 
 	OLSKTradePayPalCacheTransaction (param1, param2, param3, param4) {

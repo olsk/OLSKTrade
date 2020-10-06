@@ -376,6 +376,18 @@ describe('OLSKTradePayPalSubscription', function test_OLSKTradePayPalSubscriptio
 		deepEqual(_OLSKTradePayPalSubscription(item), [item]);
 	});
 
+	it('returns null if not found', function () {
+		deepEqual(_OLSKTradePayPalSubscription('alfa', {
+			subscriptions: {
+				retrieve () {
+					return {
+						name: 'RESOURCE_NOT_FOUND',
+					};
+				},
+			},
+		}), null);
+	});
+
 	if (liveEnabled) {
 		it('returns live data', async function () {
 			deepEqual(JSON.stringify(await _OLSKTradePayPalSubscription('I-SRVSXYP043JX', mod._DataFoilPayPal)), '');
