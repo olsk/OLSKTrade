@@ -158,8 +158,13 @@ const mod = {
 	OLSKTradePayPalTransactions () {
 		const _this = this;
 		
-		return uPromise(this._DataFoilPayPal.transactions.list()).then(function (inputData) {
-			return _this._DataPayPalCachedTransactions.concat(inputData.transaction_details);
+		return uPromise(Promise.all([
+			this._DataFoilPayPal.transactions.list(0),
+			this._DataFoilPayPal.transactions.list(1),
+			])).then(function (inputData) {
+			return _this._DataPayPalCachedTransactions.concat([].concat.apply([], inputData.map(function (e) {
+				return e.transaction_details;
+			})));
 		});
 	},
 
@@ -234,14 +239,14 @@ const mod = {
 				},
 			},
 			transactions: {
-				async list () {
+				async list (inputData) {
 					const uDate = function (inputData = 0) {
-						return (new Date(Date.now() - inputData)).toJSON();
+						return (new Date(Date.now() - 1000 * 60 * 60 * 24 * 30 * inputData)).toJSON();
 					};
 
 					return uFetch(uURL(`https://${ kPayPalService }.paypal.com/v1/reporting/transactions`, {
-						start_date: uDate(1000 * 60 * 60 * 24 * 30),
-						end_date: uDate(),
+						start_date: uDate(inputData + 1),
+						end_date: uDate(inputData),
 						fields: 'all',
 					}), {
 						method: 'GET',

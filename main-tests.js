@@ -482,10 +482,10 @@ describe('OLSKTradePayPalTransactions', function test_OLSKTradePayPalTransaction
 		return Object.assign(Object.assign({}, mod), {
 			_DataFoilPayPal: Object.assign({
 				transactions: {
-					list () {
+					list (inputData) {
 						return {
 							transaction_details: [{
-								alfa: 'bravo',
+								alfa: inputData,
 							}],
 						};
 					},
@@ -498,17 +498,21 @@ describe('OLSKTradePayPalTransactions', function test_OLSKTradePayPalTransaction
 		mod._DataPayPalCachedTransactions = [];
 	});
 
-	it('returns _DataFoilPayPal.transactions.list', function () {
-		deepEqual(_OLSKTradePayPalTransactions(), [{
-			alfa: 'bravo',
+	it('returns _DataFoilPayPal.transactions.list', async function () {
+		deepEqual(await _OLSKTradePayPalTransactions(), [{
+			alfa: 0,
+		}, {
+			alfa: 1,
 		}]);
 	});
 
-	it('includes _DataPayPalCachedTransactions', function () {
+	it('includes _DataPayPalCachedTransactions', async function () {
 		mod._DataPayPalCachedTransactions = ['alfa'];
 		
-		deepEqual(_OLSKTradePayPalTransactions(), ['alfa', {
-			alfa: 'bravo',
+		deepEqual(await _OLSKTradePayPalTransactions(), ['alfa', {
+			alfa: 0,
+		}, {
+			alfa: 1,
 		}]);
 	});
 
