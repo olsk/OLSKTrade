@@ -124,7 +124,7 @@ const mod = {
 		return this._DataFoilPayPal.subscriptions.retrieve(inputData);
 	},
 
-	OLSKTradePayPalCacheTransaction (param1, param2, param3) {
+	OLSKTradePayPalCacheTransaction (param1, param2, param3, param4) {
 		if (!(param1 instanceof Date) || Number.isNaN(param1.getTime())) {
 			throw new Error('OLSKErrorInputNotValid');
 		}
@@ -133,7 +133,11 @@ const mod = {
 			throw new Error('OLSKErrorInputNotValid');
 		}
 
-		if (!uIsFilled(param3)) {
+		if (!uIsFilled(param3) || param3[0] !== '{') {
+			throw new Error('OLSKErrorInputNotValid');
+		}
+
+		if (!uIsFilled(param4)) {
 			throw new Error('OLSKErrorInputNotValid');
 		}
 
@@ -144,6 +148,7 @@ const mod = {
 			    value: param2 + '.00'
 			  },
 			  custom_field: param3,
+			  invoice_id: param4,
 			},
 		});
 	},

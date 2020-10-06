@@ -414,14 +414,26 @@ describe('OLSKTradePayPalCacheTransaction', function test_OLSKTradePayPalCacheTr
 		}, /OLSKErrorInputNotValid/);
 	});
 
-	it('throws if param3 not filled', function () {
+	it('throws if param3 not JSON', function () {
 		throws(function () {
-			mod.OLSKTradePayPalCacheTransaction(new Date(), 1, ' ');
+			mod.OLSKTradePayPalCacheTransaction(new Date(), 1, '}');
+		}, /OLSKErrorInputNotValid/);
+	});
+
+	it('throws if param4 not string', function () {
+		throws(function () {
+			mod.OLSKTradePayPalCacheTransaction(new Date(), 1, '{}', null);
+		}, /OLSKErrorInputNotValid/);
+	});
+
+	it('throws if param4 not filled', function () {
+		throws(function () {
+			mod.OLSKTradePayPalCacheTransaction(new Date(), 1, '{}', ' ');
 		}, /OLSKErrorInputNotValid/);
 	});
 
 	it('returns undefined', function () {
-		deepEqual(mod.OLSKTradePayPalCacheTransaction(new Date(), 1, 'alfa'), undefined);
+		deepEqual(mod.OLSKTradePayPalCacheTransaction(new Date(), 1, '{}', 'bravo'), undefined);
 	});
 
 	context('_DataPayPalCachedTransactions', function () {
@@ -429,9 +441,12 @@ describe('OLSKTradePayPalCacheTransaction', function test_OLSKTradePayPalCacheTr
 		it('generates _DataPayPalCachedTransactions', function () {
 			const date = new Date();
 			const number = Date.now();
-			const string = Math.random().toString();
+			const string1 = JSON.stringify({
+				alfa: Math.random(),
+			});
+			const string2 = Math.random().toString();
 			
-			mod.OLSKTradePayPalCacheTransaction(date, number, string);
+			mod.OLSKTradePayPalCacheTransaction(date, number, string1, string2);
 
 			deepEqual(mod._DataPayPalCachedTransactions, [{
 		    transaction_info: {
@@ -439,7 +454,8 @@ describe('OLSKTradePayPalCacheTransaction', function test_OLSKTradePayPalCacheTr
 		      transaction_amount: {
 		        value: number + '.00'
 		      },
-		      custom_field: string,
+		      custom_field: string1,
+		      invoice_id: string2,
 		    },
 		  }])
 		});
