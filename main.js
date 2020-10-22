@@ -54,8 +54,6 @@ const mod = {
 		return this._DataFoilStripe.checkout.sessions.retrieve(inputData, {
 			expand: ['customer'],
 		});
-
-		return param1(process.env.OLSK_TRADE_STRIPE_SECRET_API_KEY).checkout.sessions.retrieve(param2);
 	},
 
 	OLSKTradeStripeSubscription (inputData) {
