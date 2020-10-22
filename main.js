@@ -56,6 +56,16 @@ const mod = {
 		});
 	},
 
+	OLSKTradeStripeCreateSession (inputData) {
+		if (typeof inputData !== 'object' || inputData === null) {
+			throw new Error('OLSKErrorInputNotValid');
+		}
+
+		return this._DataFoilStripe.checkout.sessions.create(Object.assign(inputData, {
+			payment_method_types: ['card'],
+		}));
+	},
+
 	OLSKTradeStripeSubscription (inputData) {
 		if (typeof inputData !== 'string') {
 			throw new Error('OLSKErrorInputNotValid');

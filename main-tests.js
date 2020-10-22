@@ -130,6 +130,40 @@ describe('OLSKTradeStripeSession', function test_OLSKTradeStripeSession() {
 
 });
 
+describe('OLSKTradeStripeCreateSession', function test_OLSKTradeStripeCreateSession() {
+
+	const _OLSKTradeStripeCreateSession = function () {
+		return Object.assign(Object.assign({}, mod), {
+			_DataFoilStripe: {
+				checkout: {
+					sessions: {
+						create () {
+							return Array.from(arguments);
+						},
+					},
+				},
+			},
+		}).OLSKTradeStripeCreateSession(...arguments);
+	};
+
+	it('throws if not object', function () {
+		throws(function () {
+			mod.OLSKTradeStripeCreateSession(null);
+		}, /OLSKErrorInputNotValid/);
+	});
+
+	it('returns checkout.sessions.create', function () {
+		const item = {
+			alfa: 'bravo',
+		};
+
+		deepEqual(_OLSKTradeStripeCreateSession(item), [Object.assign(item, {
+			payment_method_types: ['card'],
+		})]);
+	});
+
+});
+
 describe('OLSKTradeStripeSubscription', function test_OLSKTradeStripeSubscription() {
 
 	const _OLSKTradeStripeSubscription = function () {
