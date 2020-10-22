@@ -106,7 +106,7 @@ describe('OLSKTradeStripeSession', function test_OLSKTradeStripeSession() {
 					},
 				},
 			},
-		}).OLSKTradeStripeSession(...Array.from(arguments));
+		}).OLSKTradeStripeSession(...arguments);
 	};
 
 	it('throws if not string', function () {
@@ -141,7 +141,7 @@ describe('OLSKTradeStripeSubscription', function test_OLSKTradeStripeSubscriptio
 					},
 				},
 			},
-		}).OLSKTradeStripeSubscription(...Array.from(arguments));
+		}).OLSKTradeStripeSubscription(...arguments);
 	};
 
 	it('throws if not string', function () {
@@ -174,7 +174,7 @@ describe('OLSKTradeStripeInvoice', function test_OLSKTradeStripeInvoice() {
 					},
 				},
 			},
-		}).OLSKTradeStripeInvoice(...Array.from(arguments));
+		}).OLSKTradeStripeInvoice(...arguments);
 	};
 
 	it('throws if not string', function () {
@@ -207,7 +207,7 @@ describe('OLSKTradeStripeCharge', function test_OLSKTradeStripeCharge() {
 					},
 				},
 			},
-		}).OLSKTradeStripeCharge(...Array.from(arguments));
+		}).OLSKTradeStripeCharge(...arguments);
 	};
 
 	it('throws if not string', function () {
