@@ -351,8 +351,16 @@ describe('OLSKTradeStripeInvoicePrefix', function test_OLSKTradeStripeInvoicePre
 		deepEqual(mod.OLSKTradeStripeInvoicePrefix(''), '');
 	});
 
-	it('trims over eight characters', function () {
-		deepEqual(mod.OLSKTradeStripeInvoicePrefix('alfabravo'), 'alfabrav');
+	it('excludes over eight characters', function () {
+		deepEqual(mod.OLSKTradeStripeInvoicePrefix('alfabravo'), 'alfabravo');
+	});
+
+	it('extracts if suffix', function () {
+		deepEqual(mod.OLSKTradeStripeInvoicePrefix('CA86B084-0001'), 'CA86B084');
+	});
+
+	it('matches description', function () {
+		deepEqual(mod.OLSKTradeStripeInvoicePrefix('Invoice CA86B084-0001'), 'CA86B084');
 	});
 
 });

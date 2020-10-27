@@ -111,7 +111,7 @@ const mod = {
 			throw new Error('OLSKErrorInputNotValid');
 		}
 
-		return inputData.slice(0, 8);
+		return (inputData.match(/\b\w{8}\b/) || [inputData])[0];
 	},
 
 	OLSKTradePayPalAccessToken () {
