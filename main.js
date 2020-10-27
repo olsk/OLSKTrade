@@ -220,9 +220,7 @@ const mod = {
 
 	// DATA
 
-	_DataFoilStripe: (function(inputData) {
-		return require('stripe')(inputData);
-	})(process.env.OLSK_TRADE_STRIPE_SECRET_API_KEY),
+	_DataFoilStripe: require('stripe')(process.env.OLSK_TRADE_STRIPE_SECRET_API_KEY),
 	_DataPayPalCachedTransactions: [],
 	_DataFoilPayPal: (function(user, pass) {
 		const uHeaders = function (inputData = {}) {
