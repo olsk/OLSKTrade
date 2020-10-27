@@ -66,6 +66,14 @@ const mod = {
 		}));
 	},
 
+	OLSKTradeStripeListSubscriptions () {
+		return uPromise(this._DataFoilStripe.subscriptions.list({
+			limit: 50,
+		})).then(function (inputData) {
+			return inputData.data;
+		});
+	},
+
 	OLSKTradeStripeSubscription (inputData) {
 		if (typeof inputData !== 'string') {
 			throw new Error('OLSKErrorInputNotValid');

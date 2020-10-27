@@ -164,6 +164,50 @@ describe('OLSKTradeStripeCreateSession', function test_OLSKTradeStripeCreateSess
 
 });
 
+describe('OLSKTradeStripeListSubscriptions', function test_OLSKTradeStripeListSubscriptions() {
+
+	const _OLSKTradeStripeListSubscriptions = function (list) {
+		return Object.assign(Object.assign({}, mod), {
+			_DataFoilStripe: {
+				subscriptions: {
+					list,
+				},
+			},
+		}).OLSKTradeStripeListSubscriptions();
+	};
+
+	it('calls subscriptions.list', function () {
+		const item = [];
+
+		_OLSKTradeStripeListSubscriptions(function () {
+			item.push(...arguments);
+
+			return {};
+		});
+
+		deepEqual(item, [{
+			limit: 50,
+		}]);
+	});
+
+	it('returns subscriptions.list.data', function () {
+		const data = [Math.random().toString()];
+
+		deepEqual(_OLSKTradeStripeListSubscriptions(function () {
+			return {
+				data,
+			};
+		}), data);
+	});
+
+	if (liveEnabled) {
+		it('returns live data', async function () {
+			deepEqual(JSON.stringify(await mod.OLSKTradeStripeListSubscriptions()), '');
+		});
+	}
+
+});
+
 describe('OLSKTradeStripeSubscription', function test_OLSKTradeStripeSubscription() {
 
 	const _OLSKTradeStripeSubscription = function () {
