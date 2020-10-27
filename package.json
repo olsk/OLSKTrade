@@ -1,5 +1,6 @@
 {
-  "private": true,
+  "name": "OLSKTrade",
+  "main": "main.js",
   "dependencies": {
     "stripe": "latest",
     
