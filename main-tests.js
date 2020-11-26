@@ -324,6 +324,58 @@ describe('OLSKTradeStripeInvoicePrefix', function test_OLSKTradeStripeInvoicePre
 
 });
 
+describe('OLSKTradeStripeListCustomers', function test_OLSKTradeStripeListCustomers() {
+
+	const _OLSKTradeStripeListCustomers = function (list, inputData) {
+		return Object.assign(Object.assign({}, mod), {
+			_DataFoilStripe: {
+				customers: {
+					list,
+				},
+			},
+		}).OLSKTradeStripeListCustomers(inputData || Math.random().toString());
+	};
+
+	it('throws if not string', function () {
+		throws(function () {
+			mod.OLSKTradeStripeListCustomers(null);
+		}, /OLSKErrorInputNotValid/);
+	});
+
+	it('calls customers.list', function () {
+		const item = [];
+
+		const email = Math.random().toString();
+
+		_OLSKTradeStripeListCustomers(function () {
+			item.push(...arguments);
+
+			return {};
+		}, email);
+
+		deepEqual(item, [{
+			email,
+		}]);
+	});
+
+	it('returns customers.list.data', function () {
+		const data = [Math.random().toString()];
+
+		deepEqual(_OLSKTradeStripeListCustomers(function () {
+			return {
+				data,
+			};
+		}), data);
+	});
+
+	if (liveEnabled) {
+		it('returns live data', async function () {
+			deepEqual(JSON.stringify(await mod.OLSKTradeStripeListCustomers()), '');
+		});
+	}
+
+});
+
 describe('OLSKTradePayPalAccessToken', function test_OLSKTradePayPalAccessToken() {
 
 	const _OLSKTradePayPalAccessToken = function (inputData) {

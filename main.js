@@ -94,6 +94,18 @@ const mod = {
 		return (inputData.match(/\b\w{8}\b/) || [inputData])[0];
 	},
 
+	OLSKTradeStripeListCustomers (inputData) {
+		if (typeof inputData !== 'string') {
+			throw new Error('OLSKErrorInputNotValid');
+		}
+
+		return uPromise(this._DataFoilStripe.customers.list({
+			email: inputData,
+		})).then(function (inputData) {
+			return inputData.data;
+		});
+	},
+
 	OLSKTradePayPalAccessToken () {
 		return uPromise(this._DataFoilPayPal.access.token()).then(function (inputData) {
 			return inputData.access_token;
