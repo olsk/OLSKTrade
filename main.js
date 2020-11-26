@@ -54,6 +54,14 @@ const mod = {
 		return this._DataFoilStripe.subscriptions.retrieve(inputData);
 	},
 
+	OLSKTradeStripeSubscriptionDelete (inputData) {
+		if (typeof inputData !== 'string') {
+			throw new Error('OLSKErrorInputNotValid');
+		}
+
+		return this._DataFoilStripe.subscriptions.del(inputData);
+	},
+
 	OLSKTradeStripeInvoice (inputData) {
 		if (typeof inputData !== 'string') {
 			throw new Error('OLSKErrorInputNotValid');

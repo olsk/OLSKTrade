@@ -156,6 +156,33 @@ describe('OLSKTradeStripeSubscription', function test_OLSKTradeStripeSubscriptio
 
 });
 
+describe('OLSKTradeStripeSubscriptionDelete', function test_OLSKTradeStripeSubscriptionDelete() {
+
+	const _OLSKTradeStripeSubscriptionDelete = function () {
+		return Object.assign(Object.assign({}, mod), {
+			_DataFoilStripe: {
+				subscriptions: {
+					del () {
+						return Array.from(arguments);
+					},
+				},
+			},
+		}).OLSKTradeStripeSubscriptionDelete(...arguments);
+	};
+
+	it('throws if not string', function () {
+		throws(function () {
+			mod.OLSKTradeStripeSubscriptionDelete(null);
+		}, /OLSKErrorInputNotValid/);
+	});
+
+	it('returns subscriptions.del', function () {
+		const item = Date.now().toString();
+		deepEqual(_OLSKTradeStripeSubscriptionDelete(item), [item]);
+	});
+
+});
+
 describe('OLSKTradeStripeInvoice', function test_OLSKTradeStripeInvoice() {
 
 	const _OLSKTradeStripeInvoice = function () {
