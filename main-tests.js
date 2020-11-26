@@ -476,6 +476,33 @@ describe('OLSKTradePayPalSubscription', function test_OLSKTradePayPalSubscriptio
 
 });
 
+describe('OLSKTradePayPalSubscriptionDelete', function test_OLSKTradePayPalSubscriptionDelete() {
+
+	const _OLSKTradePayPalSubscriptionDelete = function (param1, param2) {
+		return Object.assign(Object.assign({}, mod), {
+			_DataFoilPayPal: Object.assign({
+				subscriptions: {
+					del () {
+						return Array.from(arguments);
+					},
+				},
+			}, param2),
+		}).OLSKTradePayPalSubscriptionDelete(param1);
+	};
+
+	it('throws if not string', function () {
+		throws(function () {
+			_OLSKTradePayPalSubscriptionDelete(null);
+		}, /OLSKErrorInputNotValid/);
+	});
+
+	it('returns _DataFoilPayPal.subscriptions.del', function () {
+		const item = Date.now().toString();
+		deepEqual(_OLSKTradePayPalSubscriptionDelete(item), [item]);
+	});
+
+});
+
 describe('OLSKTradePayPalCacheTransaction', function test_OLSKTradePayPalCacheTransaction() {
 
 	beforeEach(function () {

@@ -134,6 +134,14 @@ const mod = {
 		});
 	},
 
+	OLSKTradePayPalSubscriptionDelete (inputData) {
+		if (typeof inputData !== 'string') {
+			throw new Error('OLSKErrorInputNotValid');
+		}
+
+		return this._DataFoilPayPal.subscriptions.del(inputData);
+	},
+
 	OLSKTradePayPalCacheOrder (inputData) {
 		if (!uIsFilled(inputData)) {
 			throw new Error('OLSKErrorInputNotValid');
@@ -337,6 +345,19 @@ const mod = {
 						method: 'GET',
 						headers: uHeaders({
 							'Authorization': 'Bearer ' + await mod.OLSKTradePayPalAccessToken(),
+						}),
+					});
+				},
+				async del (inputData) {
+					return uFetch(uURL(`https://${ kPayPalService }.paypal.com/v1/billing/subscriptions/${ inputData }/cancel`, {
+					}), {
+						method: 'POST',
+						headers: uHeaders({
+							'Authorization': 'Bearer ' + await mod.OLSKTradePayPalAccessToken(),
+							'Content-Type': 'application/json',
+						}),
+						body: JSON.stringify({
+							reason: 'cancel',
 						}),
 					});
 				},
