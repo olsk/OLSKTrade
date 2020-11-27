@@ -257,6 +257,10 @@ const mod = {
 			return (await require('node-fetch')(...arguments)).json();
 		};
 
+		const uFetchNoContent = function () {
+			return require('node-fetch')(...arguments);
+		};
+
 		return {
 			access: {
 				async token () {
@@ -349,7 +353,7 @@ const mod = {
 					});
 				},
 				async del (inputData) {
-					return uFetch(uURL(`https://${ kPayPalService }.paypal.com/v1/billing/subscriptions/${ inputData }/cancel`, {
+					return uFetchNoContent(uURL(`https://${ kPayPalService }.paypal.com/v1/billing/subscriptions/${ inputData }/cancel`, {
 					}), {
 						method: 'POST',
 						headers: uHeaders({
