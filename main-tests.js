@@ -16,7 +16,7 @@ describe('OLSKTradeStripeSession', function test_OLSKTradeStripeSession() {
 				checkout: {
 					sessions: {
 						retrieve () {
-							return Array.from(arguments);
+							return [...arguments];
 						},
 					},
 				},
@@ -53,7 +53,7 @@ describe('OLSKTradeStripeCreateSession', function test_OLSKTradeStripeCreateSess
 				checkout: {
 					sessions: {
 						create () {
-							return Array.from(arguments);
+							return [...arguments];
 						},
 					},
 				},
@@ -130,7 +130,7 @@ describe('OLSKTradeStripeSubscription', function test_OLSKTradeStripeSubscriptio
 			_DataFoilStripe: {
 				subscriptions: {
 					retrieve () {
-						return Array.from(arguments);
+						return [...arguments];
 					},
 				},
 			},
@@ -163,7 +163,7 @@ describe('OLSKTradeStripeSubscriptionDelete', function test_OLSKTradeStripeSubsc
 			_DataFoilStripe: {
 				subscriptions: {
 					del () {
-						return Array.from(arguments);
+						return [...arguments];
 					},
 				},
 			},
@@ -190,7 +190,7 @@ describe('OLSKTradeStripeInvoice', function test_OLSKTradeStripeInvoice() {
 			_DataFoilStripe: {
 				invoices: {
 					retrieve () {
-						return Array.from(arguments);
+						return [...arguments];
 					},
 				},
 			},
@@ -223,7 +223,7 @@ describe('OLSKTradeStripeCharge', function test_OLSKTradeStripeCharge() {
 			_DataFoilStripe: {
 				charges: {
 					retrieve () {
-						return Array.from(arguments);
+						return [...arguments];
 					},
 				},
 			},
@@ -277,7 +277,7 @@ describe('OLSKTradeStripeListCharges', function test_OLSKTradeStripeListCharges(
 		deepEqual(_OLSKTradeStripeListCharges({
 			list () {
 				return {
-					data: Array.from(arguments),
+					data: [...arguments],
 				};
 			},
 		}), [{
@@ -438,7 +438,7 @@ describe('OLSKTradePayPalSubscription', function test_OLSKTradePayPalSubscriptio
 			_DataFoilPayPal: Object.assign({
 				subscriptions: {
 					retrieve () {
-						return Array.from(arguments);
+						return [...arguments];
 					},
 				},
 			}, param2),
@@ -483,7 +483,7 @@ describe('OLSKTradePayPalSubscriptionDelete', function test_OLSKTradePayPalSubsc
 			_DataFoilPayPal: Object.assign({
 				subscriptions: {
 					del () {
-						return Array.from(arguments);
+						return [...arguments];
 					},
 				},
 			}, param2),
@@ -730,7 +730,7 @@ describe('OLSKTradePayPalOrder', function test_OLSKTradePayPalOrder() {
 			_DataFoilPayPal: Object.assign({
 				orders: {
 					retrieve () {
-						return Array.from(arguments);
+						return [...arguments];
 					},
 				},
 			}, param2),
@@ -763,7 +763,7 @@ describe('OLSKTradePayPalPlan', function test_OLSKTradePayPalPlan() {
 			_DataFoilPayPal: Object.assign({
 				plans: {
 					retrieve () {
-						return Array.from(arguments);
+						return [...arguments];
 					},
 				},
 			}, param2),
@@ -797,7 +797,7 @@ describe('OLSKTradePayPalSubscriptionTransactions', function test_OLSKTradePayPa
 				subscriptions: {
 					transactions () {
 						return {
-							transactions: Array.from(arguments),
+							transactions: [...arguments],
 						};
 					},
 				},
