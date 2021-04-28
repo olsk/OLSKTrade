@@ -3,9 +3,6 @@
   "main": "main.js",
   "dependencies": {
     "stripe": "latest",
-    
-    "node-fetch": "latest",
-
-    "// I sacrifice myself for the commas of others": null
+    "node-fetch": "latest"
   }
 }
