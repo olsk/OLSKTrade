@@ -3,6 +3,6 @@
   "main": "main.js",
   "dependencies": {
     "stripe": "latest",
-    "node-fetch": "latest"
+    "node-fetch": "2.x"
   }
 }
