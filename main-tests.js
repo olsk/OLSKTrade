@@ -72,9 +72,7 @@ describe('OLSKTradeStripeCreateSession', function test_OLSKTradeStripeCreateSess
 			alfa: 'bravo',
 		};
 
-		deepEqual(_OLSKTradeStripeCreateSession(item), [Object.assign(item, {
-			payment_method_types: ['card'],
-		})]);
+		deepEqual(_OLSKTradeStripeCreateSession(item), [item]);
 	});
 
 });

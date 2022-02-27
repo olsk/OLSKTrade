@@ -33,9 +33,7 @@ const mod = {
 			throw new Error('OLSKErrorInputNotValid');
 		}
 
-		return this._DataFoilStripe.checkout.sessions.create(Object.assign(inputData, {
-			payment_method_types: ['card'],
-		}));
+		return this._DataFoilStripe.checkout.sessions.create(inputData);
 	},
 
 	OLSKTradeStripeListSubscriptions () {
