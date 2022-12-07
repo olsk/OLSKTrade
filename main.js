@@ -114,6 +114,10 @@ const mod = {
 
 	OLSKTradePayPalAccessToken () {
 		return uPromise(this._DataFoilPayPal.access.token()).then(function (inputData) {
+			if (inputData.error_description) {
+				throw new Error(inputData.error_description);
+			}
+
 			return inputData.access_token;
 		});
 	},
@@ -193,6 +197,10 @@ const mod = {
 			this._DataFoilPayPal.transactions.list(1),
 			])).then(function (inputData) {
 			return _this._DataPayPalCachedTransactions.concat([].concat.apply([], inputData.map(function (e) {
+				if (e.error_description) {
+					throw new Error(e.error_description);
+				}
+
 				return e.transaction_details;
 			})));
 		});
